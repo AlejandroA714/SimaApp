@@ -6,14 +6,44 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5F75489AEFE9FB41AE8B56E5 /* Pods_SimaApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0F1B1C167E77A6B523E38C /* Pods_SimaApp.framework */; };
+		A98720E92E37F2650077FC4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98720E62E37F2650077FC4B /* Assets.xcassets */; };
+		A98720EA2E37F2650077FC4B /* SimaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98720E82E37F2650077FC4B /* SimaApp.swift */; };
+		A98720ED2E37F2F30077FC4B /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A98720EC2E37F2F30077FC4B /* Podfile */; };
+		A98721002E3830410077FC4B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98720FF2E38303A0077FC4B /* MainView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		55D1735BDBCF5615C2247BC3 /* Pods-SimaApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimaApp.release.xcconfig"; path = "Target Support Files/Pods-SimaApp/Pods-SimaApp.release.xcconfig"; sourceTree = "<group>"; };
 		A92219992E30548900156C06 /* SimaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A98720E62E37F2650077FC4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A98720E82E37F2650077FC4B /* SimaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimaApp.swift; sourceTree = "<group>"; };
+		A98720EC2E37F2F30077FC4B /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		A98720FF2E38303A0077FC4B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AB0F1B1C167E77A6B523E38C /* Pods_SimaApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimaApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB502C805AD271FC4A00FE27 /* Pods-SimaApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimaApp.debug.xcconfig"; path = "Target Support Files/Pods-SimaApp/Pods-SimaApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A922199B2E30548900156C06 /* SimaApp */ = {
+		A98720EE2E37F4570077FC4B /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SimaApp;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A98720F02E37F4710077FC4B /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A98720F22E37F5C70077FC4B /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A98720F82E3821300077FC4B /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,17 +53,44 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F75489AEFE9FB41AE8B56E5 /* Pods_SimaApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A566EC0F5EAE1203D6C215E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DB502C805AD271FC4A00FE27 /* Pods-SimaApp.debug.xcconfig */,
+				55D1735BDBCF5615C2247BC3 /* Pods-SimaApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		608545E830A05832514D2503 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB0F1B1C167E77A6B523E38C /* Pods_SimaApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A92219902E30548900156C06 = {
 			isa = PBXGroup;
 			children = (
-				A922199B2E30548900156C06 /* SimaApp */,
+				A98720FF2E38303A0077FC4B /* MainView.swift */,
+				A98720F82E3821300077FC4B /* Extensions */,
+				A98720F22E37F5C70077FC4B /* ViewModels */,
+				A98720F02E37F4710077FC4B /* Views */,
+				A98720EE2E37F4570077FC4B /* Models */,
+				A98720EC2E37F2F30077FC4B /* Podfile */,
+				A98720E62E37F2650077FC4B /* Assets.xcassets */,
+				A98720E82E37F2650077FC4B /* SimaApp.swift */,
 				A922199A2E30548900156C06 /* Products */,
+				5A566EC0F5EAE1203D6C215E /* Pods */,
+				608545E830A05832514D2503 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +109,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A92219A42E30548A00156C06 /* Build configuration list for PBXNativeTarget "SimaApp" */;
 			buildPhases = (
+				09FCDB9719916B60291409D9 /* [CP] Check Pods Manifest.lock */,
 				A92219952E30548900156C06 /* Sources */,
 				A92219962E30548900156C06 /* Frameworks */,
 				A92219972E30548900156C06 /* Resources */,
@@ -61,11 +119,12 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A922199B2E30548900156C06 /* SimaApp */,
+				A98720EE2E37F4570077FC4B /* Models */,
+				A98720F02E37F4710077FC4B /* Views */,
+				A98720F22E37F5C70077FC4B /* ViewModels */,
+				A98720F82E3821300077FC4B /* Extensions */,
 			);
 			name = SimaApp;
-			packageProductDependencies = (
-			);
 			productName = SimaApp;
 			productReference = A92219992E30548900156C06 /* SimaApp.app */;
 			productType = "com.apple.product-type.application";
@@ -82,6 +141,7 @@
 				TargetAttributes = {
 					A92219982E30548900156C06 = {
 						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
 					};
 				};
 			};
@@ -109,16 +169,45 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A98720ED2E37F2F30077FC4B /* Podfile in Resources */,
+				A98720E92E37F2650077FC4B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		09FCDB9719916B60291409D9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SimaApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A92219952E30548900156C06 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A98721002E3830410077FC4B /* MainView.swift in Sources */,
+				A98720EA2E37F2650077FC4B /* SimaApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,26 +335,33 @@
 		};
 		A92219A52E30548A00156C06 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB502C805AD271FC4A00FE27 /* Pods-SimaApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3AH47Z6W6F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AppDevOne;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sv.xbt.SimaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -273,23 +369,29 @@
 		};
 		A92219A62E30548A00156C06 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55D1735BDBCF5615C2247BC3 /* Pods-SimaApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3AH47Z6W6F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AppDevOne;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sv.xbt.SimaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

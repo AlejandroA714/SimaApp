@@ -1,0 +1,6 @@
+framework module Pods_SimaApp {
+  umbrella header "Pods-SimaApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
