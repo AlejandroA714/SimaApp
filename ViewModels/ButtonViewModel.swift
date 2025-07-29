@@ -14,6 +14,8 @@ class ButtonViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.isLoading = false
             self.isEnabled = true
+            let dd = KeyManager.GOOGLE_MAPS_API_KEY
+            print(dd)
             print("✅ Acción completada")
         }
     }
