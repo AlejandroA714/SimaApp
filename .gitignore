@@ -1,0 +1,35 @@
+# Xcode
+.DS_Store
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Swift Package Manager
+/.build/
+/Packages/
+/Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+# Archivos secretos
+Secrets.xcconfig
+Secrets.plist
+Secrets.json
+
+# Otros
+*.swp
+*.lock
+*.tmp

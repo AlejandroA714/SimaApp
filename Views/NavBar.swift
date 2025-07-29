@@ -8,7 +8,7 @@ struct NavBarView: View {
         HStack {
             // MAP
             Button(action: {index = 0}){
-                Image(systemName: index == 1 ? "map" : "map.fill")
+                Image(systemName: index == 0 ? "map.fill" : "map")
                 .imageScale(.large)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -33,7 +33,7 @@ struct NavBarView: View {
         }
         .frame(
            maxWidth: .infinity,
-           maxHeight: UIScreen.main.bounds.height * 0.02 // MAX HEIGHT 1% SCREEN
+           maxHeight: UIScreen.main.bounds.height * 0.0225 // MAX HEIGHT 1% SCREEN
         )
         .padding()
         .background(Color.primaryColor)
