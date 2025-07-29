@@ -30,10 +30,15 @@ struct NavBarView: View {
                 .imageScale(.large)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Button(action: {index = 4}){
+                Image(systemName: index == 4 ? "person.badge.key.fill" : "person.badge.key")
+                .imageScale(.large)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(
            maxWidth: .infinity,
-           maxHeight: UIScreen.main.bounds.height * 0.0225 // MAX HEIGHT 1% SCREEN
+           maxHeight: UIScreen.main.bounds.height * 0.0225 // MAX HEIGHT 2.25% SCREEN
         )
         .padding()
         .background(Color.primaryColor)

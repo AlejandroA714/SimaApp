@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct LoadingButton: View {
     
     @StateObject private var viewModel = ButtonViewModel()
     
@@ -34,5 +34,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    LoadingButton()
 }

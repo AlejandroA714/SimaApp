@@ -7,11 +7,12 @@ struct MainView: View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selectedIndex {
-                case 0: ContentView()
-                case 1: AlgoView()
-                case 2: ContentView()
-                case 3: AlgoView()
-                default: ContentView()
+                case 0: MapView()
+                case 1: DeviceView()
+                case 2: AlertView()
+                case 3: SubscriptionView()
+                case 4: LoadingButton()
+                default: MapView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
