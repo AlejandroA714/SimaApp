@@ -2,22 +2,17 @@ import SwiftUI
 import GoogleMaps
 
 struct GoogleMapWrapper: UIViewRepresentable {
-    var lat: Double
-        var lng: Double
-        var zoom: Float = 14
-        
+    
+    @Binding var selectedType: GMSMapViewType;
+    
         func makeUIView(context: Context) -> GMSMapView {
-            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lng, zoom: zoom)
-            //TODO: Replace With -init or -initWithOptions
-            let mapView = GMSMapView.map(withFrame: .zero, camera: camera)
-            mapView.delegate = context.coordinator
-            mapView.isMyLocationEnabled = true
+            let mapView = GMSMapView(options: KeyManager.buildOptions())
+            KeyManager.applyExtraSettings(to: mapView)
             return mapView
         }
         
         func updateUIView(_ uiView: GMSMapView, context: Context) {
-            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lng, zoom: zoom)
-            uiView.animate(to: camera)
+            uiView.mapType = selectedType
         }
         
         func makeCoordinator() -> Coordinator {

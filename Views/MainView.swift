@@ -16,6 +16,7 @@ struct MainView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .offset(y: -UIScreen.main.bounds.height * 0.05)
             .background(Color(.systemBackground))
             NavBarView(index: $selectedIndex)
         }
