@@ -46,6 +46,8 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>API_BASE_URL</key>
+	<string>https://api.sima.udb.edu.sv</string>
 	<key>GOOGLE_MAPS_API_KEY</key>
 	<string>$(GOOGLE_MAPS_API_KEY)</string>
 	<key>GOOGLE_MAPS_OPTIONS</key>
@@ -65,9 +67,9 @@
 		<key>disableDoubleClickZoom</key>
 		<false/>
 		<key>maxZoom</key>
-		<integer>18</integer>
+		<integer>20</integer>
 		<key>minZoom</key>
-		<integer>8</integer>
+		<integer>4</integer>
 	</dict>
 </dict>
 </plist>

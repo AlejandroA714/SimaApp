@@ -9,13 +9,13 @@ struct NavBarView: View {
             // MAP
             Button(action: {index = 0}){
                 Image(systemName: index == 0 ? "map.fill" : "map")
-                .font(.system(size: 26))
+                .font(.system(size: 25))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             // DEVICES
             Button(action: {index = 1}){
                 Image(systemName: index == 1 ? "externaldrive.fill.badge.wifi" : "externaldrive.badge.wifi")
-                .font(.system(size: 26))
+                .font(.system(size: 25))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             // ALERTS
