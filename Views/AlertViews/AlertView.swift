@@ -5,4 +5,3 @@ struct AlertView: View {
         Text("Alert View")
     }
 }
-

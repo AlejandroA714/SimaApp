@@ -1,5 +1,5 @@
-import Foundation
 import CoreLocation
+import Foundation
 
 struct Entity: Codable, Identifiable {
     let id: String

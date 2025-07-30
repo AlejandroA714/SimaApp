@@ -3,13 +3,13 @@ import SwiftUI
 class ButtonViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isEnabled: Bool = true
-    
+
     func performAction() {
         guard isEnabled else { return }
-        
+
         isEnabled = false
         isLoading = true
-        
+
         // Simula una operación asíncrona (API, etc.)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.isLoading = false

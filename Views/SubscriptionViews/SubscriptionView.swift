@@ -5,4 +5,3 @@ struct SubscriptionView: View {
         Text("SubscriptionView")
     }
 }
-

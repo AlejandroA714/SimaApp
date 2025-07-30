@@ -2,19 +2,18 @@ import Foundation
 import GoogleMaps
 
 enum KeyManager {
-    
     static let GOOGLE_MAPS_API_KEY: String =
-           value(for: "GOOGLE_MAPS_API_KEY")
-    
+        value(for: "GOOGLE_MAPS_API_KEY")
+
     static let API_BASE_URL: String = value(for: "API_BASE_URL")
-    
+
     private static func value(for key: String) -> String {
-           guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
-               fatalError("❌ Missing key: \(key) in Info.plist")
-           }
-           return value
+        guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
+            fatalError("❌ Missing key: \(key) in Info.plist")
+        }
+        return value
     }
-       
+
     private static var config: [String: Any] {
         Bundle.main.object(forInfoDictionaryKey: "GOOGLE_MAPS_OPTIONS") as? [String: Any] ?? [:]
     }
@@ -30,6 +29,7 @@ enum KeyManager {
         }
         return options
     }
+
     static func applyExtraSettings(to mapView: GMSMapView) {
         if let type = (config["mapTypeId"] as? String)?.lowercased() {
             switch type {

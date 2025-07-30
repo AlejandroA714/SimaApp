@@ -9,9 +9,9 @@ enum NetworkError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .badURL: return "URL inválida"
-        case .requestFailed(let code): return "Error HTTP: \(code)"
+        case let .requestFailed(code): return "Error HTTP: \(code)"
         case .decodingFailed: return "Error al decodificar datos"
-        case .unknown(let error): return error.localizedDescription
+        case let .unknown(error): return error.localizedDescription
         }
     }
 }

@@ -1,9 +1,8 @@
 import Combine
 import Foundation
 
-class NetworkService: NetworkServiceProtocol {
-
-    func get<T: Decodable>(_ endpoint: String, headers: [String:String]? = nil) -> AnyPublisher<T, NetworkError> {
+class DefaultNetworkServie: NetworkServiceProtocol {
+    func get<T: Decodable>(_ endpoint: String, headers: [String: String]? = nil) -> AnyPublisher<T, NetworkError> {
         guard let url = URL(string: "\(KeyManager.API_BASE_URL)\(endpoint)") else {
             return Fail(error: .badURL).eraseToAnyPublisher()
         }
@@ -12,8 +11,8 @@ class NetworkService: NetworkServiceProtocol {
         headers?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         return execute(request)
     }
-    
-    func post<T: Decodable, B: Encodable>(_ endpoint: String, body: B, headers: [String:String]? = nil) -> AnyPublisher<T, NetworkError> {
+
+    func post<T: Decodable, B: Encodable>(_ endpoint: String, body: B, headers: [String: String]? = nil) -> AnyPublisher<T, NetworkError> {
         guard let url = URL(string: "\(KeyManager.API_BASE_URL)\(endpoint)") else {
             return Fail(error: .badURL).eraseToAnyPublisher()
         }
@@ -29,7 +28,8 @@ class NetworkService: NetworkServiceProtocol {
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse,
-                      (200..<300).contains(response.statusCode) else {
+                      (200 ..< 300).contains(response.statusCode)
+                else {
                     throw NetworkError.requestFailed((output.response as? HTTPURLResponse)?.statusCode ?? -1)
                 }
                 return output.data
@@ -45,4 +45,3 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 }
-
