@@ -2,10 +2,18 @@ import Combine
 import Foundation
 
 class DefaultNetworkServie: NetworkServiceProtocol {
+    private let httpProtocol: String = "https://"
+
+    private func processURL(_ endpoint: String) -> URL? {
+        guard let HTTP_URI = KeyManager.API_BASE_URL else { return nil }
+        return URL(string: "\(httpProtocol)\(HTTP_URI)\(endpoint)") ?? nil
+    }
+
     func get<T: Decodable>(_ endpoint: String, headers: [String: String]? = nil) -> AnyPublisher<T, NetworkError> {
-        guard let url = URL(string: "\(KeyManager.API_BASE_URL)\(endpoint)") else {
-            return Fail(error: .badURL).eraseToAnyPublisher()
+        guard let url = processURL(endpoint) else {
+            return Fail(error: .missingConfiguration).eraseToAnyPublisher()
         }
+        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         headers?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
@@ -13,8 +21,8 @@ class DefaultNetworkServie: NetworkServiceProtocol {
     }
 
     func post<T: Decodable, B: Encodable>(_ endpoint: String, body: B, headers: [String: String]? = nil) -> AnyPublisher<T, NetworkError> {
-        guard let url = URL(string: "\(KeyManager.API_BASE_URL)\(endpoint)") else {
-            return Fail(error: .badURL).eraseToAnyPublisher()
+        guard let url = processURL(endpoint) else {
+            return Fail(error: .missingConfiguration).eraseToAnyPublisher()
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

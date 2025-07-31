@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-struct Entity: Codable, Identifiable {
+struct Entity: Codable, Identifiable, Equatable {
     let id: String
     let type: String
     let level: Int
@@ -12,23 +12,23 @@ struct Entity: Codable, Identifiable {
     let variables: [Variable]
 }
 
-struct Variable: Codable {
+struct Variable: Codable, Equatable {
     let name: String
     let value: StringOrNumber
     let alert: Alert?
 }
 
-struct Alert: Codable {
+struct Alert: Codable, Equatable {
     let name: String
     let color: String
 }
 
-struct Location: Codable {
+struct Location: Codable, Equatable {
     let lat: Double
     let lng: Double
 }
 
-struct StringOrNumber: Codable {
+struct StringOrNumber: Codable, Equatable {
     let value: String
 
     init(from decoder: Decoder) throws {

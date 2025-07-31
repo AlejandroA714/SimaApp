@@ -4,6 +4,8 @@ import SwiftUI
 struct MapView: View {
     @EnvironmentObject var viewModel: MapViewModel
 
+    @EnvironmentObject var webSocket: WebSocket
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             GoogleMapWrapper(selectedType: .constant(GMSMapViewType.terrain), entities: $viewModel.entities)

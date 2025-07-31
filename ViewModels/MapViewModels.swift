@@ -10,10 +10,17 @@ class MapViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let prefixService: EntitiesProtocol
+    private let prefixService: EntitiesProtocol = DefaultEntitiesService()
 
-    init(prefixService: EntitiesProtocol = DefaultEntitiesService()) {
-        self.prefixService = prefixService
+    init(_ webSocket: WebSocket) {
+        // Suscribirse al WebSocket sin acoplamiento fuerte
+        webSocket.entityPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] entity in
+                print("RECEIVED ON MAP VIEW MODEL")
+                self?.entities.append(entity)
+            }
+            .store(in: &cancellables)
     }
 
     func loadEntities() {

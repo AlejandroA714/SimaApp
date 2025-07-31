@@ -22,7 +22,9 @@ struct GoogleMapWrapper: UIViewRepresentable {
             marker.position = CLLocationCoordinate2D(latitude: entity.location!.lat,
                                                      longitude: entity.location!.lng)
             marker.title = entity.type
-            marker.snippet = "Color: \(entity.color)\nNivel: \(entity.level)"
+            // marker.snippet = "Color: \(entity.color)\nNivel: \(entity.level)"
+            marker.snippet = "Id: \(entity.id) | Nivel: \(entity.level) | " +
+                entity.variables.map { "\($0.name): \($0.value.value)" }.joined(separator: " | ")
             marker.icon = GMSMarker.markerImage(with: UIColor(hex: entity.color))
             marker.map = uiView
             bounds = bounds.includingCoordinate(position)

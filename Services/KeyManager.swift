@@ -2,14 +2,14 @@ import Foundation
 import GoogleMaps
 
 enum KeyManager {
-    static let GOOGLE_MAPS_API_KEY: String =
+    static let GOOGLE_MAPS_API_KEY: String? =
         value(for: "GOOGLE_MAPS_API_KEY")
 
-    static let API_BASE_URL: String = value(for: "API_BASE_URL")
+    static let API_BASE_URL: String? = value(for: "API_BASE_URL")
 
-    private static func value(for key: String) -> String {
+    private static func value(for key: String) -> String? {
         guard let value = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
-            fatalError("❌ Missing key: \(key) in Info.plist")
+            return nil
         }
         return value
     }
