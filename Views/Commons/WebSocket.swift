@@ -46,8 +46,9 @@ class WebSocket: ObservableObject {
                     break
                 }
             }
+                //if cant connect WOULD CAUSE RECURSION, INFINITE, SLOW DOWN APP
             // it makes recursive
-            self.receiveMessage()
+           // self.receiveMessage()
         }
         // receiveMessage()
     }

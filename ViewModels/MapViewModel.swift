@@ -1,31 +1,22 @@
 import Combine
+import SwiftUICore
 import Foundation
 
 class MapViewModel: ObservableObject {
-    @Published var servicesPath: [String] = []
-
-    @Published var selectedType: String = "/#"
-
-    @Published var entities: [Entity] = []
-
+    
+    @ObservedObject var AppState: AppStateModel
+    
     private var cancellables = Set<AnyCancellable>()
 
     private let prefixService: EntitiesProtocol = DefaultEntitiesService()
 
-    init(_ webSocket: WebSocket) {
-        // Suscribirse al WebSocket sin acoplamiento fuerte
-        webSocket.entityPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] entity in
-                print("RECEIVED ON MAP VIEW MODEL")
-                self?.entities.append(entity)
-            }
-            .store(in: &cancellables)
+    init(_ AppState: AppStateModel) {
+        self.AppState = AppState
     }
 
     func loadEntities() {
-        print("🔄 Cargando entidades del API...")
-        prefixService.entities(servicePath: selectedType)
+        //print("🔄 Cargando entidades del API...")
+        prefixService.entities(servicePath: AppState.selectedPath)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -35,7 +26,7 @@ class MapViewModel: ObservableObject {
                 }
 
             }, receiveValue: { [weak self] values in
-                self?.entities = values
+                self?.AppState.entities = values
             })
             .store(in: &cancellables)
     }
@@ -52,7 +43,7 @@ class MapViewModel: ObservableObject {
                     // self?.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { [weak self] values in
-                self?.servicesPath = values
+                self?.AppState.servicesPath = values
             })
             .store(in: &cancellables)
     }

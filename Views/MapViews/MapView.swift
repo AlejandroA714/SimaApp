@@ -3,28 +3,28 @@ import SwiftUI
 
 struct MapView: View {
     @EnvironmentObject var viewModel: MapViewModel
-
-    @EnvironmentObject var webSocket: WebSocket
+    
+    @EnvironmentObject var AppState: AppStateModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            GoogleMapWrapper(selectedType: .constant(GMSMapViewType.terrain), entities: $viewModel.entities)
+            GoogleMapWrapper(selectedType: $AppState.mapType, entities: $AppState.entities)
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
-                    guard viewModel.servicesPath.isEmpty else { return }
+                    guard AppState.servicesPath.isEmpty else { return }
                     viewModel.loadEntities()
                 }
-            Picker("Tipo de mapa", selection: $viewModel.selectedType) {
+            Picker("Tipo de mapa", selection: $AppState.selectedPath) {
                 Text("/#").tag("/#")
-                ForEach(viewModel.servicesPath, id: \.self) { service in
+                ForEach(AppState.servicesPath, id: \.self) { service in
                     Text(service)
                 }
-            }.onChange(of: viewModel.selectedType) { oldValue, newValue in
+            }.onChange(of: AppState.selectedPath) { oldValue, newValue in
                 print("🌍 Cambio de \(oldValue) → \(newValue)")
                 viewModel.loadEntities()
             }
             .onAppear {
-                guard viewModel.entities.isEmpty else { return }
+                guard AppState.entities.isEmpty else { return }
                 viewModel.loadNgsi()
             }
             .pickerStyle(MenuPickerStyle())

@@ -1,23 +1,26 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var selectedIndex: Int = 0
+    
+    @StateObject var  AppState: AppStateModel
+    
+    @StateObject private var mapVM: MapViewModel
 
-    @StateObject private var mapVM: MapViewModel // = .init()
-
-    @StateObject private var webSocket: WebSocket // = .init()
+    @StateObject private var webSocket: WebSocket = .init()
 
     init() {
-        let ws = WebSocket()
-        let dd = MapViewModel(ws)
-        _webSocket = StateObject(wrappedValue: ws)
+        let AppState: AppStateModel = AppStateModel()
+        _AppState = StateObject(wrappedValue: AppState)
+        let dd = MapViewModel(AppState)
+        //_webSocket = StateObject(wrappedValue: ws)
         _mapVM = StateObject(wrappedValue: dd)
+        
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
             Group {
-                switch selectedIndex {
+                switch AppState.navigationIndex {
                 case 0: MapView()
                 case 1: DeviceView()
                 case 2: AlertView()
@@ -25,12 +28,12 @@ struct MainView: View {
                 case 4: LoadingButton()
                 default: MapView()
                 }
-            }.environmentObject(mapVM)
-                // .environmentObject(WebSocket)
+            }.environmentObject(AppState)
+                .environmentObject(mapVM)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .offset(y: -UIScreen.main.bounds.height * 0.05)
                 .background(Color(.systemBackground))
-            NavBarView(index: $selectedIndex)
+            NavBarView(index: $AppState.navigationIndex)
         }
     }
 }
