@@ -4,16 +4,18 @@ struct MainView: View {
     
     @StateObject var  AppState: AppStateModel
     
-    @StateObject private var mapVM: MapViewModel
+    @StateObject private var mapModel: MapViewModel
 
-    @StateObject private var webSocket: WebSocket = .init()
+    @StateObject private var webSocket: WebSocket
 
     init() {
         let AppState: AppStateModel = AppStateModel()
+        let Websocket: WebSocket = WebSocket(AppState)
+        let MapModel = MapViewModel(AppState)
+        //
         _AppState = StateObject(wrappedValue: AppState)
-        let dd = MapViewModel(AppState)
-        //_webSocket = StateObject(wrappedValue: ws)
-        _mapVM = StateObject(wrappedValue: dd)
+        _webSocket = StateObject(wrappedValue: Websocket)
+        _mapModel = StateObject(wrappedValue: MapModel)
         
     }
 
@@ -29,7 +31,7 @@ struct MainView: View {
                 default: MapView()
                 }
             }.environmentObject(AppState)
-                .environmentObject(mapVM)
+                .environmentObject(mapModel)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .offset(y: -UIScreen.main.bounds.height * 0.05)
                 .background(Color(.systemBackground))

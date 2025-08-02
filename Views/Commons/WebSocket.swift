@@ -3,15 +3,21 @@ import Foundation
 import SwiftUI
 
 class WebSocket: ObservableObject {
+    
+    @ObservedObject var AppState: AppStateModel
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     private let wsProtocol: String = "wss://"
-
-    let entityPublisher = PassthroughSubject<Entity, Never>()
-    // @Published var messages: [Entity] = []
-
     private var webSocketTask: URLSessionWebSocketTask?
-
-    init() {
+    
+    init(_ AppState: AppStateModel) {
+        _AppState = .init(wrappedValue: AppState)
         connect()
+        AppState.$selectedPath.sink { path in
+                print("Se cambio el path actual: \(path)")
+            self.sendMessage(path)
+        }.store(in: &cancellables)
     }
 
     private func connect() {
@@ -31,13 +37,10 @@ class WebSocket: ObservableObject {
             case let .success(message):
                 switch message {
                 case let .string(text):
-                    // print(text)
-
                     let messageData = text.data(using: .utf8)
                     let message = try? JSONDecoder().decode(Entity.self, from: messageData!)
-                    self.entityPublisher.send(message!)
-                // self.messages.append(message!)
-                // print(message as Any)
+                    self.AppState.emit(message!);
+                    self.receiveMessage()
                 case .data:
                     print("BINARY DATA")
                     // Handle binary data
@@ -46,15 +49,10 @@ class WebSocket: ObservableObject {
                     break
                 }
             }
-                //if cant connect WOULD CAUSE RECURSION, INFINITE, SLOW DOWN APP
-            // it makes recursive
-           // self.receiveMessage()
         }
-        // receiveMessage()
     }
 
     func sendMessage(_ message: String) {
-        guard let data = message.data(using: .utf8) else { return }
         webSocketTask?.send(.string(message)) { error in
             if let error = error {
                 print(error.localizedDescription)

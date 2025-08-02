@@ -22,6 +22,9 @@ struct MapView: View {
             }.onChange(of: AppState.selectedPath) { oldValue, newValue in
                 print("🌍 Cambio de \(oldValue) → \(newValue)")
                 viewModel.loadEntities()
+            }.onChange(of: AppState.entities) { oldValue, newValue in
+                //print("🌍 Cambio de \(oldValue) → \(newValue)")
+                print("Actualizacion recibida")
             }
             .onAppear {
                 guard AppState.entities.isEmpty else { return }

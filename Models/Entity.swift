@@ -1,10 +1,10 @@
 import CoreLocation
 import Foundation
 
-struct Entity: Codable, Identifiable, Equatable {
+struct Entity: Codable,Identifiable, Equatable {
     let id: String
     let type: String
-    let level: Int
+    var level: Int
     let timeInstant: String
     let externalUri: String?
     let location: Location?

@@ -13,26 +13,37 @@ struct GoogleMapWrapper: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: GMSMapView, context _: Context) {
-        uiView.clear()
-        var bounds = GMSCoordinateBounds()
-        for entity in entities {
-            guard entity.location != nil else { continue }
-            let position = CLLocationCoordinate2D(latitude: entity.location!.lat, longitude: entity.location!.lng)
-            let marker = GMSMarker()
-            marker.position = CLLocationCoordinate2D(latitude: entity.location!.lat,
-                                                     longitude: entity.location!.lng)
-            marker.title = entity.type
-            // marker.snippet = "Color: \(entity.color)\nNivel: \(entity.level)"
-            marker.snippet = "Id: \(entity.id) | Nivel: \(entity.level) | " +
-                entity.variables.map { "\($0.name): \($0.value.value)" }.joined(separator: " | ")
-            marker.icon = GMSMarker.markerImage(with: UIColor(hex: entity.color))
-            marker.map = uiView
-            bounds = bounds.includingCoordinate(position)
-        }
-        uiView.mapType = selectedType
-        if !entities.isEmpty {
-            let update = GMSCameraUpdate.fit(bounds, withPadding: 50)
-            uiView.animate(with: update)
+        let selectedId = uiView.selectedMarker?.userData as? String
+
+           uiView.clear()
+           var bounds = GMSCoordinateBounds()
+           var markers: [String: GMSMarker] = [:]
+
+           for entity in entities {
+               guard let loc = entity.location else { continue }
+               let position = CLLocationCoordinate2D(latitude: loc.lat, longitude: loc.lng)
+
+               let marker = GMSMarker(position: position)
+               marker.title = entity.type
+               marker.snippet = "Id: \(entity.id) | Nivel: \(entity.level) | " +
+                   entity.variables.map { "\($0.name): \($0.value.value)" }.joined(separator: " | ")
+               marker.icon = GMSMarker.markerImage(with: UIColor(hex: entity.color))
+               marker.userData = entity.id  // ✅ Guardamos id para reabrirlo luego
+               marker.map = uiView
+
+               markers[entity.id] = marker
+               bounds = bounds.includingCoordinate(position)
+           }
+
+           uiView.mapType = selectedType
+        if let id = selectedId, let marker = markers[id] {
+            uiView.selectedMarker = marker
+        } else {
+            // 🔹 Solo animamos si no había ninguno seleccionado antes
+            if !entities.isEmpty {
+                let update = GMSCameraUpdate.fit(bounds, withPadding: 50)
+                uiView.animate(with: update)
+            }
         }
     }
 

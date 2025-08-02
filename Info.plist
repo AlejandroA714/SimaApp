@@ -67,7 +67,7 @@
 		<key>disableDoubleClickZoom</key>
 		<false/>
 		<key>maxZoom</key>
-		<integer>20</integer>
+		<integer>22</integer>
 		<key>minZoom</key>
 		<integer>4</integer>
 	</dict>
