@@ -1,9 +1,9 @@
-import SwiftUI
 import GoogleMaps
+import SwiftUI
 
 struct LoadingButton: View {
     @StateObject private var viewModel = ButtonViewModel()
-    
+
     @EnvironmentObject var AppState: AppStateModel
 
     var body: some View {

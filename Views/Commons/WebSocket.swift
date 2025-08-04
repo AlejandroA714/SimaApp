@@ -3,19 +3,18 @@ import Foundation
 import SwiftUI
 
 class WebSocket: ObservableObject {
-    
     @ObservedObject var AppState: AppStateModel
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     private let wsProtocol: String = "wss://"
     private var webSocketTask: URLSessionWebSocketTask?
-    
+
     init(_ AppState: AppStateModel) {
         _AppState = .init(wrappedValue: AppState)
         connect()
         AppState.$selectedPath.sink { path in
-                print("Se cambio el path actual: \(path)")
+            print("Se cambio el path actual: \(path)")
             self.sendMessage(path)
         }.store(in: &cancellables)
     }
@@ -39,7 +38,7 @@ class WebSocket: ObservableObject {
                 case let .string(text):
                     let messageData = text.data(using: .utf8)
                     let message = try? JSONDecoder().decode(Entity.self, from: messageData!)
-                    self.AppState.emit(message!);
+                    self.AppState.emit(message!)
                     self.receiveMessage()
                 case .data:
                     print("BINARY DATA")

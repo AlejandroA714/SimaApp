@@ -1,31 +1,31 @@
-import SwiftUICore
 import Combine
 import GoogleMaps
+import SwiftUICore
 
 class AppStateModel: ObservableObject {
-    @Published var selectedPath: String = "/#";
-    
+    @Published var selectedPath: String = "/#"
+
     @Published var entities: [Entity] = []
-    
+
     @Published var navigationIndex: Int = 0
-    
+
     @Published var mapType: GMSMapViewType = .hybrid
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     var servicesPath: [String] = []
-    
+
     private let subject = PassthroughSubject<Entity, Never>()
-    
+
     var entityPublisher: AnyPublisher<Entity, Never> {
-            subject.eraseToAnyPublisher()
-        }
-    
-    func emit(_ entity: Entity) {
-           subject.send(entity)
+        subject.eraseToAnyPublisher()
     }
-    
-    init () {
+
+    func emit(_ entity: Entity) {
+        subject.send(entity)
+    }
+
+    init() {
         let json = """
         {
             "id": "urn:ngsi-ld:RTUHW:103",
@@ -128,35 +128,35 @@ class AppStateModel: ObservableObject {
         """.data(using: .utf8)!
         subject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] entity in
-            guard let self = self else { return }
-           // print("UPDATED EMITTED TO")
-            print(self.entities.count)
-                //do {
-                    //let randomInt = Int.random(in: 0...100)
-                    //var entity = try JSONDecoder().decode(Entity.self, from: json)
-                    //entity.level = randomInt
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                // print("UPDATED EMITTED TO")
+                print(self.entities.count)
+                do {
+                    let randomInt = Int.random(in: 0 ... 100)
+                    var entity = try JSONDecoder().decode(Entity.self, from: json)
+                    entity.level = randomInt
                     print(entity.id)
                     print(entity.level)
                     if let index = entities.firstIndex(where: { $0.id == entity.id && $0.type == entity.type }) {
-                        //objectWillChange.send()
-                        //var tempItems = entities
-                            //        tempItems[index] = entity
-                      entities[index] = entity
-                        //entities.remove(at: index)
-                        //entities.append(entity)
-                        //entities = Array(entities) // ✅ Forzar redibujado
+                        // objectWillChange.send()
+                        // var tempItems = entities
+                        //        tempItems[index] = entity
+                        entities[index] = entity
+                        // entities.remove(at: index)
+                        // entities.append(entity)
+                        // entities = Array(entities) // ✅ Forzar redibujado
                     } else {
                         entities.append(entity)
                     }
-                   // print(entity)
-//                } catch {
-//                    print("❌ Error al decodificar: \(error)")
-//                }
-                
+                    // print(entity)
+                } catch {
+                    print("❌ Error al decodificar: \(error)")
+                }
+
                 self.entities = Array(entities)
-                
+
                 print(self.entities.count)
-        }.store(in: &cancellables)
+            }.store(in: &cancellables)
     }
 }

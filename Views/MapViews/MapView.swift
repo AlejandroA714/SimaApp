@@ -3,42 +3,53 @@ import SwiftUI
 
 struct MapView: View {
     @EnvironmentObject var viewModel: MapViewModel
-    
-    @EnvironmentObject var AppState: AppStateModel
+
+    @EnvironmentObject var appState: AppStateModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            GoogleMapWrapper(selectedType: $AppState.mapType, entities: $AppState.entities)
-                .edgesIgnoringSafeArea(.all)
+            GoogleMapWrapper(selectedType: $appState.mapType, entities: $appState.entities)
+                .ignoresSafeArea()
                 .onAppear {
-                    guard AppState.servicesPath.isEmpty else { return }
+                    guard appState.servicesPath.isEmpty else { return }
                     viewModel.loadEntities()
                 }
-            Picker("Tipo de mapa", selection: $AppState.selectedPath) {
-                Text("/#").tag("/#")
-                ForEach(AppState.servicesPath, id: \.self) { service in
-                    Text(service)
+            VStack(alignment: .trailing) {
+                MapControlView()
+                Spacer()
+                Picker("Path", selection: $appState.selectedPath) {
+                    Text("/#").tag("/#")
+                    ForEach(appState.servicesPath, id: \.self) { service in
+                        if service == appState.selectedPath {
+                            Text("/" + (service.components(separatedBy: "/").last ?? service))
+                                .tag(service)
+                        } else {
+                            Text(service)
+                                .tag(service)
+                        }
+                    }
+                }.onChange(of: appState.selectedPath) { oldValue, newValue in
+                    print("🌍 Cambio de \(oldValue) → \(newValue)")
+                    viewModel.loadEntities()
                 }
-            }.onChange(of: AppState.selectedPath) { oldValue, newValue in
-                print("🌍 Cambio de \(oldValue) → \(newValue)")
-                viewModel.loadEntities()
-            }.onChange(of: AppState.entities) { oldValue, newValue in
-                //print("🌍 Cambio de \(oldValue) → \(newValue)")
-                print("Actualizacion recibida")
-            }
-            .onAppear {
-                guard AppState.entities.isEmpty else { return }
-                viewModel.loadNgsi()
-            }
-            .pickerStyle(MenuPickerStyle())
-            .background(Color.white.opacity(0.9))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(radius: 3)
-            .padding()
+                .pickerStyle(.menu)
+                .frame(maxWidth: 100, maxHeight: 40, alignment: .center)
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .shadow(radius: 3)
+
+            }.padding()
+        }.onAppear {
+            guard appState.entities.isEmpty else { return }
+            viewModel.loadNgsi()
         }
     }
 }
 
 #Preview {
+    let appStateModel: AppStateModel = .init()
+    let mapViewModel = MapViewModel(appStateModel)
     MapView()
+        .environmentObject(appStateModel)
+        .environmentObject(mapViewModel)
 }

@@ -1,11 +1,10 @@
 import Combine
-import SwiftUICore
 import Foundation
+import SwiftUICore
 
 class MapViewModel: ObservableObject {
-    
     @ObservedObject var AppState: AppStateModel
-    
+
     private var cancellables = Set<AnyCancellable>()
 
     private let prefixService: EntitiesProtocol = DefaultEntitiesService()
@@ -15,7 +14,6 @@ class MapViewModel: ObservableObject {
     }
 
     func loadEntities() {
-        //print("🔄 Cargando entidades del API...")
         prefixService.entities(servicePath: AppState.selectedPath)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -32,7 +30,6 @@ class MapViewModel: ObservableObject {
     }
 
     func loadNgsi() {
-        print("🔄 Cargando NGSI del API...")
         prefixService.servicesPath()
             .sink(receiveCompletion: { completion in
                 switch completion {

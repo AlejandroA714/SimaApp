@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-struct Entity: Codable,Identifiable, Equatable {
+struct Entity: Codable, Identifiable, Equatable {
     let id: String
     let type: String
     var level: Int
