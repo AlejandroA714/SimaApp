@@ -2,9 +2,13 @@ import GoogleMaps
 import SwiftUI
 
 struct MapView: View {
-    @EnvironmentObject var viewModel: MapViewModel
+    @StateObject private var mapViewModel: MapViewModel
+    @ObservedObject private var appState: AppStateModel
 
-    @EnvironmentObject var appState: AppStateModel
+    init(_ appState: AppStateModel) {
+        self.appState = appState
+        _mapViewModel = StateObject(wrappedValue: MapViewModel(appState, DefaultEntitiesService()))
+    }
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -12,7 +16,7 @@ struct MapView: View {
                 .ignoresSafeArea()
                 .onAppear {
                     guard appState.servicesPath.isEmpty else { return }
-                    viewModel.loadEntities()
+                    mapViewModel.loadEntities()
                 }
             VStack(alignment: .trailing) {
                 MapControlView()
@@ -30,7 +34,7 @@ struct MapView: View {
                     }
                 }.onChange(of: appState.selectedPath) { oldValue, newValue in
                     print("🌍 Cambio de \(oldValue) → \(newValue)")
-                    viewModel.loadEntities()
+                    mapViewModel.loadEntities()
                 }
                 .pickerStyle(.menu)
                 .frame(maxWidth: 100, maxHeight: 40, alignment: .center)
@@ -41,15 +45,13 @@ struct MapView: View {
             }.padding()
         }.onAppear {
             guard appState.entities.isEmpty else { return }
-            viewModel.loadNgsi()
+            mapViewModel.loadNgsi()
         }
     }
 }
 
 #Preview {
     let appStateModel: AppStateModel = .init()
-    let mapViewModel = MapViewModel(appStateModel)
-    MapView()
-        .environmentObject(appStateModel)
-        .environmentObject(mapViewModel)
+    let mapViewModel = MapViewModel(appStateModel, DefaultEntitiesService())
+    MapView(appStateModel)
 }

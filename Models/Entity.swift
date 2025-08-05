@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-struct Entity: Codable, Identifiable, Equatable {
+struct Entity: Codable, Hashable, Equatable {
     let id: String
     let type: String
     var level: Int
@@ -10,25 +10,30 @@ struct Entity: Codable, Identifiable, Equatable {
     let location: Location?
     let color: String
     let variables: [Variable]
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(type)
+    }
 }
 
-struct Variable: Codable, Equatable {
+struct Variable: Codable, Hashable, Equatable {
     let name: String
     let value: StringOrNumber
     let alert: Alert?
 }
 
-struct Alert: Codable, Equatable {
+struct Alert: Codable, Hashable, Equatable {
     let name: String
     let color: String
 }
 
-struct Location: Codable, Equatable {
+struct Location: Codable, Hashable, Equatable {
     let lat: Double
     let lng: Double
 }
 
-struct StringOrNumber: Codable, Equatable {
+struct StringOrNumber: Codable, Hashable, Equatable {
     let value: String
 
     init(from decoder: Decoder) throws {

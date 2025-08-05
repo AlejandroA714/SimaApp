@@ -2,9 +2,14 @@ import GoogleMaps
 import SwiftUI
 
 struct LoadingButton: View {
-    @StateObject private var viewModel = ButtonViewModel()
+    @StateObject private var viewModel: ButtonViewModel
 
-    @EnvironmentObject var AppState: AppStateModel
+    @ObservedObject private var AppState: AppStateModel
+
+    init(_ appState: AppStateModel) {
+        AppState = appState
+        _viewModel = .init(wrappedValue: .init())
+    }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -43,5 +48,5 @@ struct LoadingButton: View {
 }
 
 #Preview {
-    LoadingButton()
+    LoadingButton(AppStateModel())
 }

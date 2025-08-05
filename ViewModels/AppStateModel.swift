@@ -154,7 +154,7 @@ class AppStateModel: ObservableObject {
                     print("❌ Error al decodificar: \(error)")
                 }
 
-                self.entities = Array(entities)
+                self.entities = entities
 
                 print(self.entities.count)
             }.store(in: &cancellables)

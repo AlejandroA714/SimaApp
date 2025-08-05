@@ -7,7 +7,7 @@ class WebSocket: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let wsProtocol: String = "ws://"
+    private let wsProtocol: String = "wss://"
     private var webSocketTask: URLSessionWebSocketTask?
 
     init(_ AppState: AppStateModel) {

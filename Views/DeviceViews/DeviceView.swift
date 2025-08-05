@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct DeviceView: View {
-    @EnvironmentObject private var AppState: AppStateModel
+    @ObservedObject private var AppState: AppStateModel
+
+    init(_ appState: AppStateModel) {
+        AppState = appState
+    }
 
     var body: some View {
         NavigationView {
-            List($AppState.entities, id: \.id) { item in
+            List(AppState.entities, id: \.self) { item in
                 Text(item.id)
             }
             .navigationTitle("Dispositivos")

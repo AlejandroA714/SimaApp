@@ -3,18 +3,19 @@ import Foundation
 import SwiftUICore
 
 class MapViewModel: ObservableObject {
-    @ObservedObject var AppState: AppStateModel
+    private var AppState: AppStateModel
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let prefixService: EntitiesProtocol = DefaultEntitiesService()
+    private let entitiesService: EntitiesProtocol
 
-    init(_ AppState: AppStateModel) {
+    init(_ AppState: AppStateModel, _ service: EntitiesProtocol) {
         self.AppState = AppState
+        entitiesService = service
     }
 
     func loadEntities() {
-        prefixService.entities(servicePath: AppState.selectedPath)
+        entitiesService.entities(servicePath: AppState.selectedPath)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -30,7 +31,7 @@ class MapViewModel: ObservableObject {
     }
 
     func loadNgsi() {
-        prefixService.servicesPath()
+        entitiesService.servicesPath()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:

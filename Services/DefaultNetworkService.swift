@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 class DefaultNetworkServie: NetworkServiceProtocol {
-    private let httpProtocol: String = "http://"
+    private let httpProtocol: String = "https://"
 
     private func processURL(_ endpoint: String) -> URL? {
         guard let HTTP_URI = KeyManager.API_BASE_URL else { return nil }
