@@ -9,7 +9,7 @@ class AppStateModel: ObservableObject {
 
     @Published var navigationIndex: Int = 0
 
-    @Published var mapType: GMSMapViewType = .hybrid
+    @Published var mapType: GMSMapViewType = .normal
 
     private var cancellables = Set<AnyCancellable>()
 

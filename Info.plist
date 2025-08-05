@@ -10,6 +10,11 @@
 	<string>6.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>Education</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>UISupportedInterfaceOrientations</key>
@@ -47,7 +52,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>API_BASE_URL</key>
-	<string>api.sima.udb.edu.sv</string>
+	<string>3.91.164.139:8081</string>
 	<key>GOOGLE_MAPS_API_KEY</key>
 	<string>$(GOOGLE_MAPS_API_KEY)</string>
 	<key>GOOGLE_MAPS_OPTIONS</key>
