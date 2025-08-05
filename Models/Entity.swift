@@ -39,20 +39,13 @@ struct StringOrNumber: Codable, Hashable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        // ✅ Intenta decodificar como String
         if let str = try? container.decode(String.self) {
             value = str
-        }
-        // ✅ Si es número entero → conviértelo a String
-        else if let int = try? container.decode(Int.self) {
+        } else if let int = try? container.decode(Int.self) {
             value = "\(int)"
-        }
-        // ✅ Si es número decimal → conviértelo a String
-        else if let dbl = try? container.decode(Double.self) {
+        } else if let dbl = try? container.decode(Double.self) {
             value = "\(dbl)"
-        }
-        // ✅ Si es null u otro formato → String vacío
-        else {
+        } else {
             value = ""
         }
     }

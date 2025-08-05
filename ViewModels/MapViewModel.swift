@@ -3,11 +3,11 @@ import Foundation
 import SwiftUICore
 
 class MapViewModel: ObservableObject {
-    private var AppState: AppStateModel
-
-    private var cancellables = Set<AnyCancellable>()
+    private let AppState: AppStateModel
 
     private let entitiesService: EntitiesProtocol
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(_ AppState: AppStateModel, _ service: EntitiesProtocol) {
         self.AppState = AppState
@@ -16,12 +16,9 @@ class MapViewModel: ObservableObject {
 
     func loadEntities() {
         entitiesService.entities(servicePath: AppState.selectedPath)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case let .failure(error):
-                    print(error.localizedDescription)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.AppState.networkError = "Error de red: \(error.localizedDescription)"
                 }
 
             }, receiveValue: { [weak self] values in
@@ -32,13 +29,9 @@ class MapViewModel: ObservableObject {
 
     func loadNgsi() {
         entitiesService.servicesPath()
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case let .failure(error):
-                    print(error.localizedDescription)
-                    // self?.errorMessage = error.localizedDescription
+            .sink(receiveCompletion: { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.AppState.networkError = "Error de red: \(error.localizedDescription)"
                 }
             }, receiveValue: { [weak self] values in
                 self?.AppState.servicesPath = values

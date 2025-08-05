@@ -11,11 +11,19 @@ class AppStateModel: ObservableObject {
 
     @Published var mapType: GMSMapViewType = .normal
 
+    @Published var networkError: String?
+
     private var cancellables = Set<AnyCancellable>()
 
     var servicesPath: [String] = []
 
     private let subject = PassthroughSubject<Entity, Never>()
+
+    func setNetworkError(_ message: String) {
+        DispatchQueue.main.async {
+            self.networkError = message
+        }
+    }
 
     var entityPublisher: AnyPublisher<Entity, Never> {
         subject.eraseToAnyPublisher()

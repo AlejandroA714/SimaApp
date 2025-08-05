@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct SubscriptionView: View {
-    @ObservedObject private var AppState: AppStateModel
+    @ObservedObject private var appState: AppStateModel
 
-    init(_ appState: AppStateModel) {
-        AppState = appState
+    init(_ state: AppStateModel) {
+        _appState = ObservedObject(initialValue: state)
     }
 
     var body: some View {

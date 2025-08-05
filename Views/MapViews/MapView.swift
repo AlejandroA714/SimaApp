@@ -5,9 +5,9 @@ struct MapView: View {
     @StateObject private var mapViewModel: MapViewModel
     @ObservedObject private var appState: AppStateModel
 
-    init(_ appState: AppStateModel) {
-        self.appState = appState
-        _mapViewModel = StateObject(wrappedValue: MapViewModel(appState, DefaultEntitiesService()))
+    init(_ state: AppStateModel) {
+        _appState = ObservedObject(initialValue: state)
+        _mapViewModel = StateObject(wrappedValue: MapViewModel(state, DefaultEntitiesService()))
     }
 
     var body: some View {
@@ -19,7 +19,7 @@ struct MapView: View {
                     mapViewModel.loadEntities()
                 }
             VStack(alignment: .trailing) {
-                MapControlView()
+                MapControlView(appState)
                 Spacer()
                 Picker("Path", selection: $appState.selectedPath) {
                     Text("/#").tag("/#")
@@ -43,7 +43,8 @@ struct MapView: View {
                 .shadow(radius: 3)
 
             }.padding()
-        }.onAppear {
+        }
+        .onAppear {
             guard appState.entities.isEmpty else { return }
             mapViewModel.loadNgsi()
         }
@@ -51,7 +52,5 @@ struct MapView: View {
 }
 
 #Preview {
-    let appStateModel: AppStateModel = .init()
-    let mapViewModel = MapViewModel(appStateModel, DefaultEntitiesService())
-    MapView(appStateModel)
+    MapView(.init())
 }

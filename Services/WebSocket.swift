@@ -3,17 +3,17 @@ import Foundation
 import SwiftUI
 
 class WebSocket: ObservableObject {
-    @ObservedObject var AppState: AppStateModel
+    @ObservedObject var appState: AppStateModel
 
     private var cancellables = Set<AnyCancellable>()
-
     private let wsProtocol: String = "wss://"
     private var webSocketTask: URLSessionWebSocketTask?
+    private var reconnectDelay: TimeInterval = 5
 
-    init(_ AppState: AppStateModel) {
-        _AppState = .init(wrappedValue: AppState)
+    init(_ appState: AppStateModel) {
+        _appState = ObservedObject(initialValue: appState)
         connect()
-        AppState.$selectedPath.sink { path in
+        appState.$selectedPath.sink { path in
             print("Se cambio el path actual: \(path)")
             self.sendMessage(path)
         }.store(in: &cancellables)
@@ -29,25 +29,42 @@ class WebSocket: ObservableObject {
     }
 
     private func receiveMessage() {
-        webSocketTask?.receive { result in
+        webSocketTask?.receive { [weak self] result in
+            guard let self = self else { return }
             switch result {
-            case let .failure(error):
-                print(error.localizedDescription)
+            case .failure:
+                self.appState.setNetworkError("Se perdió la conexión con el servidor. Reintentando...")
+                self.scheduleReconnect()
             case let .success(message):
-                switch message {
-                case let .string(text):
-                    let messageData = text.data(using: .utf8)
-                    let message = try? JSONDecoder().decode(Entity.self, from: messageData!)
-                    self.AppState.emit(message!)
-                    self.receiveMessage()
-                case .data:
-                    print("BINARY DATA")
-                    // Handle binary data
-                    break
-                @unknown default:
-                    break
+                if let entity = self.decodeEntity(from: message) {
+                    self.appState.emit(entity)
+                } else {
+                    print("⚠️ WebSocket: mensaje inválido recibido: [\(message)]")
                 }
+                self.reconnectDelay = 5
+                self.receiveMessage()
             }
+        }
+    }
+
+    private func scheduleReconnect() {
+        let delay = reconnectDelay
+        reconnectDelay = min(reconnectDelay * 2, 60)
+        print("ℹ️ WebSocket: reconectando en \(Int(delay)) segundos...")
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.connect()
+        }
+    }
+
+    private func decodeEntity(from message: URLSessionWebSocketTask.Message) -> Entity? {
+        switch message {
+        case let .string(text):
+            guard let data = text.data(using: .utf8) else { return nil }
+            return try? JSONDecoder().decode(Entity.self, from: data)
+        case let .data(data):
+            return try? JSONDecoder().decode(Entity.self, from: data)
+        @unknown default:
+            return nil
         }
     }
 

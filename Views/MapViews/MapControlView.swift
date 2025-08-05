@@ -4,7 +4,11 @@ import SwiftUI
 struct MapControlView: View {
     @State private var showOverlay: Bool = false
     @State private var showLabels: Bool = true
-    @EnvironmentObject var AppState: AppStateModel
+    @ObservedObject var appState: AppStateModel
+
+    init(_ state: AppStateModel) {
+        _appState = ObservedObject(initialValue: state)
+    }
 
     var body: some View {
         ZStack {
@@ -56,17 +60,17 @@ private extension MapControlView {
         VStack {
             HStack {
                 selectableImage("NormalType", title: "Normal",
-                                isSelected: AppState.mapType == .normal,
+                                isSelected: appState.mapType == .normal,
                                 type: .normal)
 
                 selectableImage("SatelliteType", title: "Híbrido",
-                                isSelected: [.hybrid, .satellite].contains(AppState.mapType),
+                                isSelected: [.hybrid, .satellite].contains(appState.mapType),
                                 type: .hybrid, showOptions: true)
             }
 
             HStack {
                 selectableImage("TerrainType", title: "Relieve",
-                                isSelected: AppState.mapType == .terrain,
+                                isSelected: appState.mapType == .terrain,
                                 type: .terrain)
             }
         }
@@ -134,9 +138,9 @@ private extension MapControlView {
 
     func selectMapType(_ type: GMSMapViewType) {
         if type == .hybrid {
-            AppState.mapType = showLabels ? .hybrid : .satellite
+            appState.mapType = showLabels ? .hybrid : .satellite
         } else {
-            AppState.mapType = type
+            appState.mapType = type
         }
         closeOverlay()
     }
@@ -144,12 +148,12 @@ private extension MapControlView {
     func toggleLabels(for type: GMSMapViewType) {
         showLabels.toggle()
         if type == .hybrid {
-            AppState.mapType = showLabels ? .hybrid : .satellite
+            appState.mapType = showLabels ? .hybrid : .satellite
         }
         closeOverlay()
     }
 }
 
 #Preview {
-    MapControlView()
+    MapControlView(.init())
 }
