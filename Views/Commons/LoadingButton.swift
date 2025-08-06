@@ -4,10 +4,10 @@ import SwiftUI
 struct LoadingButton: View {
     @StateObject private var viewModel: ButtonViewModel
 
-    @ObservedObject private var AppState: AppStateModel
+    @ObservedObject private var appState: AppStateModel
 
-    init(_ appState: AppStateModel) {
-        AppState = appState
+    init(_ state: AppStateModel) {
+        _appState = ObservedObject(initialValue: state)
         _viewModel = .init(wrappedValue: .init())
     }
 
@@ -15,12 +15,12 @@ struct LoadingButton: View {
         VStack(spacing: 20) {
             Text("Botón con estados")
                 .font(.title2)
-            Picker("Tipo de mapa", selection: $AppState.mapType) {
+            Picker("Tipo de mapa", selection: appState.mapTypeBinding) {
                 Text("Normal").tag(GMSMapViewType.normal)
                 Text("Satélite").tag(GMSMapViewType.satellite)
                 Text("Hibrido").tag(GMSMapViewType.hybrid)
                 Text("Terraceria").tag(GMSMapViewType.terrain)
-            }.onReceive(AppState.$mapType) { newValue in
+            }.onReceive(appState.$mapType) { newValue in
                 print("🌍 Cambio a \(newValue)")
             }
             Button(action: {

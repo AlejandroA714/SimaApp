@@ -18,11 +18,11 @@ class MapViewModel: ObservableObject {
         entitiesService.entities(servicePath: AppState.selectedPath)
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
-                    self?.AppState.networkError = "Error de red: \(error.localizedDescription)"
+                    self?.AppState.setNetworkError("Error de red: \(error.localizedDescription)")
                 }
 
             }, receiveValue: { [weak self] values in
-                self?.AppState.entities = values
+                self?.AppState.setEntities(values)
             })
             .store(in: &cancellables)
     }
@@ -31,7 +31,7 @@ class MapViewModel: ObservableObject {
         entitiesService.servicesPath()
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
-                    self?.AppState.networkError = "Error de red: \(error.localizedDescription)"
+                    self?.AppState.setNetworkError("Error de red: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] values in
                 self?.AppState.servicesPath = values

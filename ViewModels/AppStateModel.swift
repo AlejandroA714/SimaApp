@@ -3,37 +3,75 @@ import GoogleMaps
 import SwiftUICore
 
 class AppStateModel: ObservableObject {
-    @Published var selectedPath: String = "/#"
-
-    @Published var entities: [Entity] = []
-
-    @Published var navigationIndex: Int = 0
-
-    @Published var mapType: GMSMapViewType = .normal
-
-    @Published var networkError: String?
-
+    @Published private(set) var selectedPath: String = "/#"
+    @Published private(set) var entities: [Entity] = []
+    @Published private(set) var navigationIndex: Int = 0
+    @Published private(set) var mapType: GMSMapViewType = .normal
+    @Published private(set) var networkError: String?
+    var servicesPath: [String] = []
+    private let subject = PassthroughSubject<Entity, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    var servicesPath: [String] = []
+    private func makeBinding<T>(get: @escaping () -> T, set: @escaping (T) -> Void) -> Binding<T> {
+        Binding(get: get, set: set)
+    }
 
-    private let subject = PassthroughSubject<Entity, Never>()
-
-    func setNetworkError(_ message: String) {
-        DispatchQueue.main.async {
-            self.networkError = message
+    private func updateOnMain<T>(_ keyPath: ReferenceWritableKeyPath<AppStateModel, T>, to value: T) {
+        if Thread.isMainThread {
+            self[keyPath: keyPath] = value
+        } else {
+            DispatchQueue.main.async {
+                self[keyPath: keyPath] = value
+            }
         }
     }
 
-    var entityPublisher: AnyPublisher<Entity, Never> {
+    var mapTypeBinding: Binding<GMSMapViewType> {
+        makeBinding(get: { self.mapType }, set: { self.setMapType($0) })
+    }
+
+    var navigationIndexBinding: Binding<Int> {
+        makeBinding(get: { self.navigationIndex }, set: { self.setNavigationIndex($0) })
+    }
+
+    var selectedPathBinding: Binding<String> {
+        makeBinding(get: { self.selectedPath }, set: { self.setSelectedPath($0) })
+    }
+
+    var entitiesBinding: Binding<[Entity]> {
+        makeBinding(get: { self.entities }, set: { self.setEntities($0) })
+    }
+
+    func setSelectedPath(_ path: String) {
+        updateOnMain(\.selectedPath, to: path)
+    }
+
+    func setEntities(_ newEntities: [Entity]) {
+        updateOnMain(\.entities, to: newEntities)
+    }
+
+    func setNetworkError(_ message: String?) {
+        updateOnMain(\.networkError, to: message)
+    }
+
+    func setNavigationIndex(_ index: Int) {
+        updateOnMain(\.navigationIndex, to: index)
+    }
+
+    func setMapType(_ type: GMSMapViewType) {
+        updateOnMain(\.mapType, to: type)
+    }
+
+    var entitiesUpdate: AnyPublisher<Entity, Never> {
         subject.eraseToAnyPublisher()
     }
 
-    func emit(_ entity: Entity) {
+    func emitUpdate(_ entity: Entity) {
         subject.send(entity)
     }
 
     init() {
+        // self.entitiesUpdate = subject.eraseToAnyPublisher()
         let json = """
         {
             "id": "urn:ngsi-ld:RTUHW:103",

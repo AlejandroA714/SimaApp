@@ -9,6 +9,7 @@ class WebSocket: ObservableObject {
     private let wsProtocol: String = "wss://"
     private var webSocketTask: URLSessionWebSocketTask?
     private var reconnectDelay: TimeInterval = 5
+    private let decoder: JSONDecoder = .init()
 
     init(_ appState: AppStateModel) {
         _appState = ObservedObject(initialValue: appState)
@@ -32,12 +33,13 @@ class WebSocket: ObservableObject {
         webSocketTask?.receive { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .failure:
+            case let .failure(error):
+                print("⚠️ WebSocket: mensaje inválido recibido: [\(error.localizedDescription)]")
                 self.appState.setNetworkError("Se perdió la conexión con el servidor. Reintentando...")
                 self.scheduleReconnect()
             case let .success(message):
                 if let entity = self.decodeEntity(from: message) {
-                    self.appState.emit(entity)
+                    self.appState.emitUpdate(entity)
                 } else {
                     print("⚠️ WebSocket: mensaje inválido recibido: [\(message)]")
                 }
@@ -60,9 +62,9 @@ class WebSocket: ObservableObject {
         switch message {
         case let .string(text):
             guard let data = text.data(using: .utf8) else { return nil }
-            return try? JSONDecoder().decode(Entity.self, from: data)
+            return try? decoder.decode(Entity.self, from: data)
         case let .data(data):
-            return try? JSONDecoder().decode(Entity.self, from: data)
+            return try? decoder.decode(Entity.self, from: data)
         @unknown default:
             return nil
         }

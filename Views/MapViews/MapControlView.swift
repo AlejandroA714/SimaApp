@@ -138,9 +138,9 @@ private extension MapControlView {
 
     func selectMapType(_ type: GMSMapViewType) {
         if type == .hybrid {
-            appState.mapType = showLabels ? .hybrid : .satellite
+            appState.setMapType(showLabels ? .hybrid : .satellite)
         } else {
-            appState.mapType = type
+            appState.setMapType(type)
         }
         closeOverlay()
     }
@@ -148,7 +148,7 @@ private extension MapControlView {
     func toggleLabels(for type: GMSMapViewType) {
         showLabels.toggle()
         if type == .hybrid {
-            appState.mapType = showLabels ? .hybrid : .satellite
+            appState.setMapType(showLabels ? .hybrid : .satellite)
         }
         closeOverlay()
     }

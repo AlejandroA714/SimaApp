@@ -12,7 +12,7 @@ struct MapView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            GoogleMapWrapper(selectedType: $appState.mapType, entities: $appState.entities)
+            GoogleMapWrapper(selectedType: appState.mapTypeBinding, entities: appState.entitiesBinding)
                 .ignoresSafeArea()
                 .onAppear {
                     guard appState.servicesPath.isEmpty else { return }
@@ -21,7 +21,7 @@ struct MapView: View {
             VStack(alignment: .trailing) {
                 MapControlView(appState)
                 Spacer()
-                Picker("Path", selection: $appState.selectedPath) {
+                Picker("Path", selection: appState.selectedPathBinding) {
                     Text("/#").tag("/#")
                     ForEach(appState.servicesPath, id: \.self) { service in
                         if service == appState.selectedPath {

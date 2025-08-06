@@ -24,19 +24,19 @@ struct MainView: View {
                 }
             }.alert(isPresented: Binding<Bool>(
                 get: { appState.networkError != nil },
-                set: { if !$0 { appState.networkError = nil }
+                set: { if !$0 { appState.setNetworkError(nil) }
                 }
             )
             ) {
                 SwiftUI.Alert(
                     title: Text("Error"),
                     message: Text(appState.networkError ?? "Error desconocido"),
-                    dismissButton: .default(Text("Vale"), action: { appState.networkError = nil })
+                    dismissButton: .default(Text("Vale"), action: { appState.setNetworkError(nil) })
                 )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
-            NavBarView(index: $appState.navigationIndex)
+            NavBarView(index: appState.navigationIndexBinding)
         }
     }
 }
