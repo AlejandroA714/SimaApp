@@ -3,8 +3,8 @@ import SwiftUI
 
 struct GoogleMapWrapper: UIViewRepresentable {
     @Binding var selectedType: GMSMapViewType
-
     @Binding var entities: [Entity]
+    @Binding var selectedEntity: Entity? // ✅ Para mostrar InfoMapWindow
 
     func makeUIView(context: Context) -> GMSMapView {
         let mapView = GMSMapView(options: KeyManager.buildOptions())
@@ -14,51 +14,38 @@ struct GoogleMapWrapper: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: GMSMapView, context _: Context) {
-        let selectedId = uiView.selectedMarker?.userData as? String
         uiView.clear()
         var bounds = GMSCoordinateBounds()
         var markers: [String: GMSMarker] = [:]
 
         for entity in entities {
             guard let loc = entity.location else { continue }
-            let position = CLLocationCoordinate2D(latitude: loc.lat, longitude: loc.lng)
-
-            let marker = GMSMarker(position: position)
-            marker.title = entity.type
-            marker.snippet = "Id: \(entity.id) | Nivel: \(entity.level) | " +
-                entity.variables.map { "\($0.name): \($0.value.value)" }.joined(separator: " | ")
+            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: loc.lat, longitude: loc.lng))
+            marker.userData = entity
             marker.icon = GMSMarker.markerImage(with: UIColor(hex: entity.color))
-            marker.userData = entity.id
             marker.map = uiView
-
             markers[entity.id] = marker
-            bounds = bounds.includingCoordinate(position)
+            bounds = bounds.includingCoordinate(marker.position)
         }
 
-        uiView.mapType = selectedType
-        if let id = selectedId, let marker = markers[id] {
-            uiView.selectedMarker = marker
-        } else {
-            if !entities.isEmpty {
-                let update = GMSCameraUpdate.fit(bounds, withPadding: 50)
-                uiView.animate(with: update)
-            }
+        if !entities.isEmpty {
+            uiView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 50))
         }
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(parent: self)
     }
 
     class Coordinator: NSObject, GMSMapViewDelegate {
-        func mapView(_: GMSMapView, didTap marker: GMSMarker) -> Bool {
-            print("🟢 Marker tapped: \(marker.title ?? "")")
-            return false
-        }
+        var parent: GoogleMapWrapper
+        init(parent: GoogleMapWrapper) { self.parent = parent }
 
-        func mapView(_: GMSMapView, willMove _: Bool) {
-            // if gesture { userHasMoved = true }
-            print("🟢 Map Moved: ")
+        func mapView(_: GMSMapView, didTap marker: GMSMarker) -> Bool {
+            if let entity = marker.userData as? Entity {
+                parent.selectedEntity = entity
+            }
+            return true
         }
     }
 }

@@ -4,6 +4,7 @@ import SwiftUI
 struct MapView: View {
     @StateObject private var mapViewModel: MapViewModel
     @ObservedObject private var appState: AppStateModel
+    @State private var selectedEntity: Entity? = nil
 
     init(_ state: AppStateModel) {
         _appState = ObservedObject(initialValue: state)
@@ -11,42 +12,70 @@ struct MapView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            GoogleMapWrapper(selectedType: appState.mapTypeBinding, entities: appState.entitiesBinding)
-                .ignoresSafeArea()
-                .onAppear {
-                    guard appState.servicesPath.isEmpty else { return }
+        ZStack {
+            GoogleMapWrapper(
+                selectedType: appState.mapTypeBinding,
+                entities: appState.entitiesBinding,
+                selectedEntity: $selectedEntity
+            )
+            .ignoresSafeArea()
+            .onAppear {
+                if appState.servicesPath.isEmpty, appState.entities.isEmpty {
                     mapViewModel.loadEntities()
                 }
-            VStack(alignment: .trailing) {
-                MapControlView(appState)
+            }
+            VStack {
+                HStack {
+                    MapControlView(appState)
+                    Spacer()
+                }
                 Spacer()
-                Picker("Path", selection: appState.selectedPathBinding) {
-                    Text("/#").tag("/#")
-                    ForEach(appState.servicesPath, id: \.self) { service in
-                        if service == appState.selectedPath {
-                            Text("/" + (service.components(separatedBy: "/").last ?? service))
-                                .tag(service)
-                        } else {
-                            Text(service)
-                                .tag(service)
+            }
+            .padding([.top, .leading], 12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            if selectedEntity != nil {
+                VStack {
+                    HStack {
+                        Spacer()
+                        InfoMapWindow(entity: $selectedEntity)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeOut(duration: 0.2), value: selectedEntity?.id)
+                    }
+                    Spacer()
+                }
+                .padding([.top, .trailing], 12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Picker("Path", selection: appState.selectedPathBinding) {
+                        Text("/#").tag("/#")
+                        ForEach(appState.servicesPath, id: \.self) { service in
+                            if service == appState.selectedPath {
+                                Text("/" + (service.components(separatedBy: "/").last ?? service))
+                                    .tag(service)
+                            } else {
+                                Text(service).tag(service)
+                            }
                         }
                     }
-                }.onChange(of: appState.selectedPath) { oldValue, newValue in
-                    print("🌍 Cambio de \(oldValue) → \(newValue)")
-                    mapViewModel.loadEntities()
+                    .onChange(of: appState.selectedPath) { _, _ in
+                        mapViewModel.loadEntities()
+                    }
+                    .pickerStyle(.menu)
+                    .frame(maxWidth: 140, maxHeight: 40)
+                    .background(Color(.systemBackground)) // solo el picker mantiene fondo
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .shadow(radius: 3)
                 }
-                .pickerStyle(.menu)
-                .frame(maxWidth: 100, maxHeight: 40, alignment: .center)
-                .background(Color(.systemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .shadow(radius: 3)
-
-            }.padding()
+            }
+            .padding([.trailing, .bottom], 12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .onAppear {
-            guard appState.entities.isEmpty else { return }
-            mapViewModel.loadNgsi()
+            if appState.entities.isEmpty { mapViewModel.loadNgsi() }
         }
     }
 }
