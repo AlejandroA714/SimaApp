@@ -1,6 +1,6 @@
 import Combine
 import GoogleMaps
-import SwiftUICore
+import SwiftUI
 
 class AppStateModel: ObservableObject {
     @Published private(set) var selectedPath: String = "/#"

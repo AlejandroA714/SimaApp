@@ -1,6 +1,6 @@
 import Combine
 import Foundation
-import SwiftUICore
+import SwiftUI
 
 class MapViewModel: ObservableObject {
     private let AppState: AppStateModel
