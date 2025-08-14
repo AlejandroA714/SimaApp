@@ -15,6 +15,17 @@ struct Entity: Codable, Hashable, Equatable {
         hasher.combine(id)
         hasher.combine(type)
     }
+
+    func coordinate() -> CLLocationCoordinate2D? {
+        guard let location = location else { return nil }
+        return CLLocationCoordinate2D(latitude: location.lat, longitude: location.lng)
+    }
+}
+
+extension Sequence where Element == Entity {
+    func coordinates() -> [CLLocationCoordinate2D] {
+        compactMap { $0.coordinate() }
+    }
 }
 
 struct Variable: Codable, Hashable, Equatable {

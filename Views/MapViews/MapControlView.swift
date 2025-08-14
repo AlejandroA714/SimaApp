@@ -32,10 +32,8 @@ private extension MapControlView {
                     .padding(10)
             }
             .clipShape(Rectangle())
-
             Divider().frame(height: 2).background(Color.gray.opacity(0.3))
-
-            Button(action: {}) {
+            Button(action: { MapController.shared.centerContent(to: appState.entities.coordinates()) }) {
                 Image(systemName: "location.fill")
                     .resizable()
                     .scaledToFit()

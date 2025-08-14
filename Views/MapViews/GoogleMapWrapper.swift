@@ -4,32 +4,48 @@ import SwiftUI
 struct GoogleMapWrapper: UIViewRepresentable {
     @Binding var selectedType: GMSMapViewType
     @Binding var entities: [Entity]
-    @Binding var selectedEntity: Entity? // ✅ Para mostrar InfoMapWindow
+    @Binding var selectedEntity: Entity?
 
     func makeUIView(context: Context) -> GMSMapView {
         let mapView = GMSMapView(options: KeyManager.buildOptions())
         mapView.delegate = context.coordinator
         KeyManager.applyExtraSettings(to: mapView)
+        MapController.shared.setupMapView(mapView)
         return mapView
     }
 
-    func updateUIView(_ uiView: GMSMapView, context _: Context) {
-        uiView.clear()
-        var bounds = GMSCoordinateBounds()
-        var markers: [String: GMSMarker] = [:]
-
-        for entity in entities {
-            guard let loc = entity.location else { continue }
-            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: loc.lat, longitude: loc.lng))
-            marker.userData = entity
-            marker.icon = GMSMarker.markerImage(with: UIColor(hex: entity.color))
-            marker.map = uiView
-            markers[entity.id] = marker
-            bounds = bounds.includingCoordinate(marker.position)
+    func updateUIView(_ uiView: GMSMapView, context: Context) {
+        uiView.mapType = selectedType
+        // ONLY CREATE FOR ENTITIES WITH LOCATION
+        let validKeys: Set<MarkerKey> = Set(entities.compactMap { e in
+            guard e.location != nil else { return nil }
+            return MarkerKey(id: e.id, type: e.type)
+        })
+        // REMOVE MARKER IF ENTITY DOEST EXISTS
+        for (key, marker) in context.coordinator.markers where !validKeys.contains(key) {
+            marker.map = nil
+            context.coordinator.markers.removeValue(forKey: key)
         }
-
-        if !entities.isEmpty {
-            uiView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 50))
+        // UPDATE OR CREATE
+        print("\(selectedEntity?.id ?? "Nulo")")
+        for e in entities {
+            guard let loc = e.location else { continue }
+            let key = MarkerKey(id: e.id, type: e.type)
+            let pos = CLLocationCoordinate2D(latitude: loc.lat, longitude: loc.lng)
+            if let m = context.coordinator.markers[key] {
+                if m.position.latitude != pos.latitude || m.position.longitude != pos.longitude {
+                    m.position = pos
+                }
+                m.icon = GMSMarker.markerImage(with: UIColor(hex: e.color))
+                m.userData = e
+                if m.map == nil { m.map = uiView }
+            } else {
+                let m = GMSMarker(position: pos)
+                m.icon = GMSMarker.markerImage(with: UIColor(hex: e.color))
+                m.userData = e
+                m.map = uiView
+                context.coordinator.markers[key] = m
+            }
         }
     }
 
@@ -37,7 +53,8 @@ struct GoogleMapWrapper: UIViewRepresentable {
         Coordinator(parent: self)
     }
 
-    class Coordinator: NSObject, GMSMapViewDelegate {
+    final class Coordinator: NSObject, GMSMapViewDelegate {
+        var markers: [MarkerKey: GMSMarker] = [:]
         var parent: GoogleMapWrapper
         init(parent: GoogleMapWrapper) { self.parent = parent }
 
@@ -47,5 +64,10 @@ struct GoogleMapWrapper: UIViewRepresentable {
             }
             return true
         }
+    }
+
+    struct MarkerKey: Hashable {
+        let id: String
+        let type: String
     }
 }

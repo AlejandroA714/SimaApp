@@ -20,7 +20,7 @@ struct MapView: View {
             )
             .ignoresSafeArea()
             .onAppear {
-                if appState.servicesPath.isEmpty, appState.entities.isEmpty {
+                if appState.entities.isEmpty {
                     mapViewModel.loadEntities()
                 }
             }
@@ -40,6 +40,9 @@ struct MapView: View {
                         InfoMapWindow(entity: $selectedEntity)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .animation(.easeOut(duration: 0.2), value: selectedEntity?.id)
+                            .onChange(of: selectedEntity?.id) { _, newValue in
+                                print("Entity: \(String(describing: newValue)) Updated")
+                            }
                     }
                     Spacer()
                 }
@@ -66,7 +69,7 @@ struct MapView: View {
                     }
                     .pickerStyle(.menu)
                     .frame(maxWidth: 140, maxHeight: 40)
-                    .background(Color(.systemBackground)) // solo el picker mantiene fondo
+                    .background(Color(.systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .shadow(radius: 3)
                 }
@@ -75,7 +78,7 @@ struct MapView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .onAppear {
-            if appState.entities.isEmpty { mapViewModel.loadNgsi() }
+            if appState.servicesPath.isEmpty { mapViewModel.loadPath() }
         }
     }
 }

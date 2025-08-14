@@ -3,7 +3,7 @@ import Foundation
 import SwiftUI
 
 class WebSocket: ObservableObject {
-    @ObservedObject var appState: AppStateModel
+    private let appState: AppStateModel
 
     private var cancellables = Set<AnyCancellable>()
     private let wsProtocol: String = "wss://"
@@ -12,7 +12,7 @@ class WebSocket: ObservableObject {
     private let decoder: JSONDecoder = .init()
 
     init(_ appState: AppStateModel) {
-        _appState = ObservedObject(initialValue: appState)
+        self.appState = appState
         connect()
         appState.$selectedPath.sink { path in
             print("Se cambio el path actual: \(path)")

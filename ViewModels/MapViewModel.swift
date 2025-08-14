@@ -16,19 +16,24 @@ class MapViewModel: ObservableObject {
 
     func loadEntities() {
         entitiesService.entities(servicePath: AppState.selectedPath)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
                     self?.AppState.setNetworkError("Error de red: \(error.localizedDescription)")
                 }
 
             }, receiveValue: { [weak self] values in
+                Task { @MainActor in
+                    MapController.shared.centerContent(to: values.coordinates())
+                }
                 self?.AppState.setEntities(values)
             })
             .store(in: &cancellables)
     }
 
-    func loadNgsi() {
+    func loadPath() {
         entitiesService.servicesPath()
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case let .failure(error) = completion {
                     self?.AppState.setNetworkError("Error de red: \(error.localizedDescription)")

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct InfoMapWindow: View {
     @Binding var entity: Entity?
-    @State private var localCopy: Entity?
+    // @State private var localCopy: Entity?
 
     var body: some View {
         if let e = entity {
@@ -14,7 +14,7 @@ struct InfoMapWindow: View {
                     Button {
                         withAnimation(.easeInOut(duration: 0.15)) {
                             entity = nil
-                            localCopy = nil
+                            // localCopy = nil
                         }
                     } label: {
                         Image(systemName: "xmark.circle.fill")
@@ -23,16 +23,17 @@ struct InfoMapWindow: View {
                     }
                     .buttonStyle(.plain)
                 }
+                .padding(8)
                 Text("Nivel: \(e.level)").font(.subheadline)
                 ForEach(e.variables, id: \.name) { variable in
                     Text("\(variable.name): \(variable.value.value)")
                         .font(.caption)
                 }
-            }.onChange(of: entity) { _, newValue in
-                localCopy = newValue
             }
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding(8)
-            .background(Color.white)
+            // .background(Color.white)
             .cornerRadius(8)
             .shadow(radius: 4)
         }

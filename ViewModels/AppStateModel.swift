@@ -59,6 +59,7 @@ class AppStateModel: ObservableObject {
     }
 
     func setMapType(_ type: GMSMapViewType) {
+        guard mapType != type else { return }
         updateOnMain(\.mapType, to: type)
     }
 
