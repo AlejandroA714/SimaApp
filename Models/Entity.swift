@@ -4,7 +4,7 @@ import Foundation
 struct Entity: Codable, Hashable, Equatable {
     let id: String
     let type: String
-    var level: Int
+    let level: Int
     let timeInstant: String
     let externalUri: String?
     let location: Location?
@@ -51,6 +51,10 @@ struct MarkerKey: Hashable {
 
 struct StringOrNumber: Codable, Hashable, Equatable {
     let value: String
+
+    init(_ value: String) {
+        self.value = value
+    }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()

@@ -33,6 +33,9 @@ struct MapView: View {
             }
             .padding([.top, .leading], 12)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            
+            ///
+            
             if selectedEntity != nil {
                 VStack {
                     HStack {
@@ -50,6 +53,8 @@ struct MapView: View {
                 .padding([.top, .trailing], 12)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
+            
+            /////
             VStack {
                 Spacer()
                 HStack {

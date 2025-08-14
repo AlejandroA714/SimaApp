@@ -5,36 +5,26 @@ struct InfoMapWindow: View {
     let onClear: () -> Void
 
     var body: some View {
-        if let e = entity {
-            VStack(alignment: .center) {
-                HStack(spacing: 8) {
-                    Text("ID: ").font(.caption).bold()
-                    Text(e.id).font(.caption)
-                    Spacer()
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.15)) {
-                            onClear()
-                        }
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .imageScale(.medium)
-                            .accessibilityLabel("Cerrar")
+        OverlayBackgroundView(onTapGesture: onClear) {
+            if let e = entity {
+                VStack(alignment: .center, spacing: 8) {
+                    Text("ID: \(e.id)").font(.caption).bold()
+                    Text("Nivel: \(e.level)").font(.subheadline)
+                    ForEach(e.variables, id: \.name) { variable in
+                        Text("\(variable.name): \(variable.value.value)")
+                            .font(.caption)
                     }
-                    .buttonStyle(.plain)
                 }
-                .padding(8)
-                Text("Nivel: \(e.level)").font(.subheadline)
-                ForEach(e.variables, id: \.name) { variable in
-                    Text("\(variable.name): \(variable.value.value)")
-                        .font(.caption)
-                }
+                .frame(minWidth: UIScreen.main.bounds.width / 1.75,
+                       minHeight: UIScreen.main.bounds.height / 6)
+                .padding(15)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .padding(8)
-            // .background(Color.white)
-            .cornerRadius(8)
-            .shadow(radius: 4)
         }
     }
+}
+
+#Preview {
+    InfoMapWindow(entity: Entity(id: "URN:NGSI-ld:RTUFS:002", type: "LORAWAN", level: 3, timeInstant: "14/07/2025", externalUri: nil, location: Location(lat: 13.715932, lng: -89.156336), color: "#f6d32d", variables: [Variable(name: "Humedad del Aire", value: StringOrNumber("65 %"), alert: Alert(name: "Media", color: "#f6d32d"))])) {}
 }
