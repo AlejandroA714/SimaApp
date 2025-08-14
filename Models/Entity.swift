@@ -44,6 +44,11 @@ struct Location: Codable, Hashable, Equatable {
     let lng: Double
 }
 
+struct MarkerKey: Hashable {
+    let id: String
+    let type: String
+}
+
 struct StringOrNumber: Codable, Hashable, Equatable {
     let value: String
 

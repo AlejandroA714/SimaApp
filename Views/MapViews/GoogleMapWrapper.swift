@@ -4,7 +4,7 @@ import SwiftUI
 struct GoogleMapWrapper: UIViewRepresentable {
     @Binding var selectedType: GMSMapViewType
     @Binding var entities: [Entity]
-    @Binding var selectedEntity: Entity?
+    @Binding var selectedEntity: MarkerKey?
 
     func makeUIView(context: Context) -> GMSMapView {
         let mapView = GMSMapView(options: KeyManager.buildOptions())
@@ -60,14 +60,9 @@ struct GoogleMapWrapper: UIViewRepresentable {
 
         func mapView(_: GMSMapView, didTap marker: GMSMarker) -> Bool {
             if let entity = marker.userData as? Entity {
-                parent.selectedEntity = entity
+                parent.selectedEntity = MarkerKey(id: entity.id, type: entity.type)
             }
             return true
         }
-    }
-
-    struct MarkerKey: Hashable {
-        let id: String
-        let type: String
     }
 }

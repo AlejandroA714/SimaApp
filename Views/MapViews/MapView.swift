@@ -4,7 +4,7 @@ import SwiftUI
 struct MapView: View {
     @StateObject private var mapViewModel: MapViewModel
     @ObservedObject private var appState: AppStateModel
-    @State private var selectedEntity: Entity? = nil
+    @State private var selectedEntity: MarkerKey? = nil
 
     init(_ state: AppStateModel) {
         _appState = ObservedObject(initialValue: state)
@@ -37,7 +37,8 @@ struct MapView: View {
                 VStack {
                     HStack {
                         Spacer()
-                        InfoMapWindow(entity: $selectedEntity)
+                        InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
+                                      onClear: { selectedEntity = nil })
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .animation(.easeOut(duration: 0.2), value: selectedEntity?.id)
                             .onChange(of: selectedEntity?.id) { _, newValue in

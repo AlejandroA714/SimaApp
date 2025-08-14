@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct InfoMapWindow: View {
-    @Binding var entity: Entity?
-    // @State private var localCopy: Entity?
+    let entity: Entity?
+    let onClear: () -> Void
 
     var body: some View {
         if let e = entity {
@@ -13,8 +13,7 @@ struct InfoMapWindow: View {
                     Spacer()
                     Button {
                         withAnimation(.easeInOut(duration: 0.15)) {
-                            entity = nil
-                            // localCopy = nil
+                            onClear()
                         }
                     } label: {
                         Image(systemName: "xmark.circle.fill")
