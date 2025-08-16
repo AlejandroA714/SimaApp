@@ -17,72 +17,31 @@ struct MapView: View {
                 selectedType: appState.mapTypeBinding,
                 entities: appState.entitiesBinding,
                 selectedEntity: $selectedEntity
-            )
-            .ignoresSafeArea()
-            .onAppear {
-                if appState.entities.isEmpty {
-                    mapViewModel.loadEntities()
-                }
-            }
-            VStack {
-                HStack {
-                    MapControlView(appState)
-                    Spacer()
-                }
-                Spacer()
-            }
-            .padding([.top, .leading], 12)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            
-            ///
-            
-            if selectedEntity != nil {
-                VStack {
-                    HStack {
-                        Spacer()
-                        InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
-                                      onClear: { selectedEntity = nil })
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                            .animation(.easeOut(duration: 0.2), value: selectedEntity?.id)
-                            .onChange(of: selectedEntity?.id) { _, newValue in
-                                print("Entity: \(String(describing: newValue)) Updated")
-                            }
-                    }
-                    Spacer()
-                }
-                .padding([.top, .trailing], 12)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-            }
-            
-            /////
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Picker("Path", selection: appState.selectedPathBinding) {
-                        Text("/#").tag("/#")
-                        ForEach(appState.servicesPath, id: \.self) { service in
-                            if service == appState.selectedPath {
-                                Text("/" + (service.components(separatedBy: "/").last ?? service))
-                                    .tag(service)
-                            } else {
-                                Text(service).tag(service)
-                            }
-                        }
-                    }
-                    .onChange(of: appState.selectedPath) { _, _ in
+            ).ignoresSafeArea()
+                // TODO: REMOVE FROM VIEW, USE VIEW MODEL
+                .onAppear {
+                    if appState.entities.isEmpty {
                         mapViewModel.loadEntities()
                     }
-                    .pickerStyle(.menu)
-                    .frame(maxWidth: 140, maxHeight: 40)
-                    .background(Color(.systemBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .shadow(radius: 3)
+                }
+            VStack(alignment: .trailing) {
+                HStack {
+                    MapControlView(appState)
+                }
+                Spacer()
+                HStack {
+                    PathPicker(appState.selectedPathBinding, appState.servicesPath)
+                        // TODO: REMOVE FROM VIEW, USE VIEW MODEL
+                        .onChange(of: appState.selectedPath) { _, _ in
+                            mapViewModel.loadEntities()
+                        }
                 }
             }
-            .padding([.trailing, .bottom], 12)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-        }
+            .padding(16)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+            InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
+                          onClear: { selectedEntity = nil })
+        } // TODO: REMOVE FROM VIEW, USE VIEW MODEL
         .onAppear {
             if appState.servicesPath.isEmpty { mapViewModel.loadPath() }
         }

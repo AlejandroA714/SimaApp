@@ -27,7 +27,6 @@ struct GoogleMapWrapper: UIViewRepresentable {
             context.coordinator.markers.removeValue(forKey: key)
         }
         // UPDATE OR CREATE
-        print("\(selectedEntity?.id ?? "Nulo")")
         for e in entities {
             guard let loc = e.location else { continue }
             let key = MarkerKey(id: e.id, type: e.type)
