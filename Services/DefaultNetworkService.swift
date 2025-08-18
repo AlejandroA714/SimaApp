@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-class DefaultNetworkServie: NetworkServiceProtocol {
+class DefaultNetworkService: NetworkServiceProtocol {
     private let httpProtocol: String = "https://"
 
     private func processURL(_ endpoint: String) -> URL? {

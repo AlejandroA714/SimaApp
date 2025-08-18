@@ -52,6 +52,11 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		A9EAB02A2E53D7E100EF7E52 /* Wrappers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Wrappers;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +78,7 @@
 				A9AF3C482E388BA1009F4BB2 /* .gitignore */,
 				A9AF3C462E388B93009F4BB2 /* Secrets.xcconfig */,
 				A98720F82E3821300077FC4B /* Extensions */,
+				A9EAB02A2E53D7E100EF7E52 /* Wrappers */,
 				A98720F02E37F4710077FC4B /* Views */,
 				A98720EE2E37F4570077FC4B /* Models */,
 				A98720F22E37F5C70077FC4B /* ViewModels */,
@@ -114,6 +120,7 @@
 				A98720F82E3821300077FC4B /* Extensions */,
 				A9B512BA2E3925450066B2CD /* Services */,
 				A9B512E42E395FCC0066B2CD /* Protocols */,
+				A9EAB02A2E53D7E100EF7E52 /* Wrappers */,
 			);
 			name = SimaApp;
 			productName = SimaApp;

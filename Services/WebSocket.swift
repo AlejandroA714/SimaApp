@@ -21,16 +21,40 @@ class WebSocket: ObservableObject {
         }.store(in: &cancellables)
     }
 
+    deinit {
+        webSocketTask?.cancel(with: .goingAway, reason: nil)
+    }
+
+    func connectIfNeeded() {
+        guard webSocketTask == nil || webSocketTask?.state != .running else { return }
+        connect()
+    }
+
     private func connect() {
         guard let WS_URI = KeyManager.API_BASE_URL else { print("WS_URI not set"); return }
         guard let url = URL(string: "\(wsProtocol)\(WS_URI)/v1/ngsi/ws/") else { print("Invalid URL"); return }
         let request = URLRequest(url: url)
+        webSocketTask?.cancel(with: .normalClosure, reason: nil)
         webSocketTask = URLSession.shared.webSocketTask(with: request)
         webSocketTask?.resume()
         receiveMessage()
     }
 
+    func disconnect() {
+        webSocketTask?.cancel(with: .normalClosure, reason: nil)
+        webSocketTask = nil
+    }
+
     private func receiveMessage() {
+        guard let task = webSocketTask else {
+            scheduleReconnect()
+            return
+        }
+        guard task.state == .running else {
+            print("SOCKET IS NOT RUNNING, RECONNECTING...")
+            scheduleReconnect()
+            return
+        }
         webSocketTask?.receive { [weak self] result in
             guard let self = self else { return }
             switch result {

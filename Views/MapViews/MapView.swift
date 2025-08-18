@@ -12,25 +12,27 @@ struct MapView: View {
     }
 
     var body: some View {
-        ZStack {
-            GoogleMapWrapper(
-                selectedType: appState.mapTypeBinding,
-                entities: appState.entitiesBinding,
-                selectedEntity: $selectedEntity
-            ).ignoresSafeArea()
-            VStack(alignment: .trailing) {
-                HStack {
-                    MapControlView(appState)
+        NavigationStack {
+            ZStack {
+                GoogleMapWrapper(
+                    selectedType: appState.mapTypeBinding,
+                    entities: appState.entitiesBinding,
+                    selectedEntity: $selectedEntity
+                ).ignoresSafeArea()
+                VStack(alignment: .trailing) {
+                    HStack {
+                        MapControlView(appState)
+                    }
+                    Spacer()
+                    HStack {
+                        PathPicker(appState.selectedPathBinding, appState.servicesPath)
+                    }
                 }
-                Spacer()
-                HStack {
-                    PathPicker(appState.selectedPathBinding, appState.servicesPath)
-                }
+                .padding(16)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
+                              onClear: { selectedEntity = nil })
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
-            InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
-                          onClear: { selectedEntity = nil })
         }
     }
 }

@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 class DefaultEntitiesService: EntitiesProtocol {
-    private let web: NetworkServiceProtocol = DefaultNetworkServie()
+    private let web: NetworkServiceProtocol = DefaultNetworkService()
 
     func servicesPath() -> AnyPublisher<[String], NetworkError> {
         return web.get("/v1/ngsi/services-path", headers: ["X-Service": "sv"])

@@ -9,6 +9,11 @@ struct InfoMapWindow: View {
             VStack(alignment: .center, spacing: 8) {
                 Text("ID: \(e.id)").font(.caption).bold()
                 Text("Nivel: \(e.level)").font(.subheadline)
+                if e.externalUri != nil {
+                    NavigationLink("Ir a detalle") {
+                        WebView(url: e.externalUri!)
+                    }
+                }
                 ForEach(e.variables, id: \.name) { variable in
                     Text("\(variable.name): \(variable.value.value)")
                         .font(.caption)
@@ -19,8 +24,9 @@ struct InfoMapWindow: View {
             .padding(15)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-        }.transition(.move(edge: .top).combined(with: .opacity))
-            .animation(.easeOut(duration: 0.2), value: entity?.id)
+        }
+        // .transition(.move(edge: .top).combined(with: .opacity))
+        //   .animation(.easeOut(duration: 0.2), value: entity?.id)
     }
 }
 

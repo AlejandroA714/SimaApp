@@ -53,7 +53,7 @@ struct OverlayBackgroundView<Content: View>: View {
     var body: some View {
         if showOverlay {
             ZStack {
-                Color.white.opacity(0.5)
+                Color.white.opacity(0.01)
                     .ignoresSafeArea()
                     .onTapGesture { onTapGesture() }
                 content()

@@ -79,6 +79,7 @@ class AppStateModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] entity in
                 guard let self = self else { return }
+                print("RECEIVED UPDATE: [\(entity.id)]")
                 if let index = entities.firstIndex(where: { $0.id == entity.id && $0.type == entity.type }) {
                     entities[index] = entity
                 } else {
