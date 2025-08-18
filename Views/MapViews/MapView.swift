@@ -18,12 +18,6 @@ struct MapView: View {
                 entities: appState.entitiesBinding,
                 selectedEntity: $selectedEntity
             ).ignoresSafeArea()
-                // TODO: REMOVE FROM VIEW, USE VIEW MODEL
-                .onAppear {
-                    if appState.entities.isEmpty {
-                        mapViewModel.loadEntities()
-                    }
-                }
             VStack(alignment: .trailing) {
                 HStack {
                     MapControlView(appState)
@@ -31,19 +25,12 @@ struct MapView: View {
                 Spacer()
                 HStack {
                     PathPicker(appState.selectedPathBinding, appState.servicesPath)
-                        // TODO: REMOVE FROM VIEW, USE VIEW MODEL
-                        .onChange(of: appState.selectedPath) { _, _ in
-                            mapViewModel.loadEntities()
-                        }
                 }
             }
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
             InfoMapWindow(entity: appState.entities.first(where: { $0.id == selectedEntity?.id && $0.type == selectedEntity?.type }),
                           onClear: { selectedEntity = nil })
-        } // TODO: REMOVE FROM VIEW, USE VIEW MODEL
-        .onAppear {
-            if appState.servicesPath.isEmpty { mapViewModel.loadPath() }
         }
     }
 }

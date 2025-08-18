@@ -11,6 +11,7 @@ struct GoogleMapWrapper: UIViewRepresentable {
         mapView.delegate = context.coordinator
         KeyManager.applyExtraSettings(to: mapView)
         MapController.shared.setupMapView(mapView)
+        MapController.shared.centerContent(to: entities.coordinates())
         return mapView
     }
 

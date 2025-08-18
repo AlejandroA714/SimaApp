@@ -58,11 +58,11 @@
 	<key>GOOGLE_MAPS_OPTIONS</key>
 	<dict>
 		<key>lat</key>
-		<real>13.71533946841958</real>
+		<real>13.70548524953463</real>
 		<key>lng</key>
-		<real>-89.15459756437511</real>
+		<real>-89.20224167403553</real>
 		<key>zoom</key>
-		<integer>14</integer>
+		<integer>12</integer>
 		<key>mapId</key>
 		<string>SIMA_UDB</string>
 		<key>mapTypeId</key>

@@ -1,6 +1,5 @@
 import GoogleMaps
 
-@MainActor
 final class MapController {
     // SINGLETON
     static let shared = MapController()

@@ -35,7 +35,10 @@ class AppStateModel: ObservableObject {
     }
 
     var selectedPathBinding: Binding<String> {
-        makeBinding(get: { self.selectedPath }, set: { self.setSelectedPath($0) })
+        makeBinding(get: { self.selectedPath }, set: { [weak self] newValue in
+            guard let self = self, self.selectedPath != newValue else { return }
+            self.setSelectedPath(newValue)
+        })
     }
 
     var entitiesBinding: Binding<[Entity]> {
@@ -76,15 +79,12 @@ class AppStateModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] entity in
                 guard let self = self else { return }
-                print(self.entities.count)
-                print(entity.id)
                 if let index = entities.firstIndex(where: { $0.id == entity.id && $0.type == entity.type }) {
                     entities[index] = entity
                 } else {
                     entities.append(entity)
                 }
                 self.entities = entities
-                print(self.entities.count)
             }.store(in: &cancellables)
     }
 }

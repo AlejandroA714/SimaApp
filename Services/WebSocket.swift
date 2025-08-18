@@ -14,9 +14,10 @@ class WebSocket: ObservableObject {
     init(_ appState: AppStateModel) {
         self.appState = appState
         connect()
-        appState.$selectedPath.sink { path in
-            print("Se cambio el path actual: \(path)")
-            self.sendMessage(path)
+        appState.$selectedPath.onChangePair {
+            [weak self] old, new in
+            self?.sendMessage(new)
+            print("[\(old ?? "")] -> [\(new)]")
         }.store(in: &cancellables)
     }
 
