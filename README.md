@@ -39,23 +39,28 @@
 
 ### Cambiar entre múltiples rutas (mapa / navegación)
 
-```md
+
 ![Cambiar rutas](docs/cambiar-rutas.gif)
-```
+
+### Mostrar datos actualizados
+
+
+![Data](docs/data.png)
+
 
 ### Recibir notificaciones
 
-```md
+
 ![Notificaciones](docs/notificaciones.gif)
-```
+
 
 ### Cambiar tipo de mapa
 
-```md
-![Tipo de mapa](docs/tipo-mapa.gif)
-```
 
-### Abrir reporte en WebView
+![Tipo de mapa](docs/tipo-mapa.gif)
+
+
+### Mostrar datos historicos
 
 ```html
 <video src="docs/reporte-webview.mp4" controls loop muted playsinline style="max-width:100%"></video>
