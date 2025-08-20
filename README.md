@@ -39,13 +39,14 @@
 
 ### Cambiar entre múltiples rutas (mapa / navegación)
 
-
 ![Cambiar rutas](docs/cambiar-rutas.gif)
 
 ### Mostrar datos actualizados
 
 
-![Data](docs/data.png)
+<p align="center">
+  <img src="./docs/data.png" width="720" alt="Abrir app">
+</p>
 
 
 ### Recibir notificaciones
@@ -62,11 +63,9 @@
 
 ### Mostrar datos historicos
 
-```html
-<video src="docs/reporte-webview.mp4" controls loop muted playsinline style="max-width:100%"></video>
-```
-
-> **Sugerencia**: usa MP4 (H.264) en lugar de GIF para mantener tamaños bajos. Si prefieres GIF, mantén ≤10s, 600–900px de ancho y 10–15 fps.
+<p align="center">
+  <img src="./docs/webview.gif" width="720" alt="Abrir app">
+</p>
 
 ---
 
