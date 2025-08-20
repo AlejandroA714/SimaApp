@@ -64,7 +64,7 @@
 ### Mostrar datos historicos
 
 <p align="center">
-  <img src="./docs/webview.gif" width="720" alt="Abrir app">
+  <img src="./docs/webview.gif" width="480" alt="Abrir app">
 </p>
 
 ---
