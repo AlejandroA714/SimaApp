@@ -8,6 +8,8 @@ struct SimaApp: App {
             fatalError("❌ Missing key: GOOGLE_MAPS_API_KEY in Info.plist")
         }
         GMSServices.provideAPIKey(value)
+        NotificationService.shared.configure()
+        NotificationService.shared.requestAuthorization()
     }
 
     var body: some Scene {

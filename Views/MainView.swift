@@ -37,6 +37,8 @@ struct MainView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             NavBarView(index: appState.navigationIndexBinding)
+        }.onAppear {
+            appState.requestNotificationPermission()
         }
     }
 }
