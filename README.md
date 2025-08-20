@@ -59,14 +59,14 @@
 </p>
 
 <p align="center">
-  <img src="./docs/notificaciones.png" width="480" alt="Abrir app">
+  <img src="./docs/notificaciones.gif" width="480" alt="Abrir app">
 </p>
 
 
 ### Cambiar tipo de mapa
 
 <p align="center">
-  <img src="./docs/tipo-mapa.png" width="480" alt="Abrir app">
+  <img src="./docs/tipo-mapa.gif" width="480" alt="Abrir app">
 </p>
 
 
